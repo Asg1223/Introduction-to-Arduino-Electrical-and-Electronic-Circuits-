@@ -230,6 +230,9 @@
         }
     }
 </style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}, {left: '\\(', right: '\\)', display: false}, {left: '\\[', right: '\\]', display: true}]});"></script>
 </head>
 <body>
 
@@ -246,12 +249,12 @@
     <ul>
         <li><b>電圧 <span class="math-inline">V</span> (Unit: V)</b>：電気的な「位置エネルギーの差（電位差）」です。水路に例えると<b>「水位の高さ（水圧）」</b>です。</li>
         <li><b>電流 <span class="math-inline">I</span> (Unit: A / mA)</b>：断面を1秒間に通過する電荷の量（流れの強さ）です。水路の<b>「水の流量」</b>にあたります。<span class="math-inline">1\text{A} = 1000\text{mA}</span> です。</li>
-        <li><b>抵抗 <span class="math-inline">R</span> (Unit: &Omega;)</b>：電気の流れにくさです。水路の<b>「川幅の狭さや、障害物の多さ」</b>にあたります。</li>
+        <li><b>抵抗 <span class="math-inline">R</span> (Unit: \Omega)</b>：電気の流れにくさです。水路の<b>「川幅の狭さや、障害物の多さ」</b>にあたります。</li>
     </ul>
 
     <h3>1-2. 数理モデル：オームの法則</h3>
     <p>これら3つの関係性は、以下の数式で完全に縛られます。</p>
-    <div class="math-block">V = I &times; R</div>
+    <div class="math-block">V = I \times R</div>
 
     <h2>2. デジタル出力：LEDの物性と電流制限抵抗の設計</h2>
     <p>LED（発光ダイオード）は普通の電球とは異なり、「半導体」としての強い物理的特性（極性、順電圧 <span class="math-inline">V_f</span>）を持っています。これを超えると抵抗がほぼゼロになり無限に電流が流れてしまうため、直列に「電流制限抵抗」を配置して回路を守ります。</p>
@@ -324,7 +327,7 @@
         <div class="flex-col-text">
             <h3>3-1. 分圧の法則（Voltage Divider）</h3>
             <p>アナログスティックやボリュームつまみは、内部の可変抵抗の比率（<span class="math-inline">R_1</span> と <span class="math-inline">R_2</span>）を変えることで、中間のピンから滑らかに変化する電圧 <span class="math-inline">V_{out}</span> を出力します。</p>
-            <div class="math-block" style="font-size:15px;">V_{out} = V_{cc} &times; \frac{R_2}{R_1 + R_2}</div>
+            <div class="math-block" style="font-size:15px;">V_{out} = V_{cc} \times \frac{R_2}{R_1 + R_2}</div>
             <h3>3-2. 10ビット解像度のAD変換</h3>
             <p>Arduino Unoは内部の10ビットADCを用いて、0V〜5Vのアナログ電圧を <b>0 〜 1023</b>（1024段階）の整数にマッピングします。そのため、プログラム内で電圧値に戻すには、読み取った値に対して以下の計算を行います。</p>
             <p style="text-align:center;"><span class="math-inline">\text{電圧}(V) = \text{analogReadの値} \times (5.0 / 1023.0)</span></p>
