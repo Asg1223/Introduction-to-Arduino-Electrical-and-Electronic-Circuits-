@@ -1,448 +1,333 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Arduino電子工作</title>
-<style>
-    :root {
-        --arduino-teal: #00979d;
-        --arduino-dark: #007a7c;
-        --dark-bg: #1a202c;
-        --text-color: #2d3748;
-        --light-bg: #f7fafc;
-        --border-color: #cbd5e0;
-        --exercise-bg: #fffbeb;
-        --exercise-border: #f59e0b;
-    }
-    body {
-        font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
-        color: var(--text-color);
-        line-height: 1.6;
-        margin: 0;
-        padding: 0;
-        background-color: #f0f4f8;
-    }
-    .container {
-        max-width: 950px;
-        margin: 40px auto;
-        background: #ffffff;
-        padding: 40px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        border-radius: 8px;
-    }
-    header {
-        background-color: var(--arduino-teal);
-        color: white;
-        margin: -40px -40px 40px -40px;
-        padding: 40px;
-        text-align: center;
-        border-radius: 8px 8px 0 0;
-        border-bottom: 5px solid var(--arduino-dark);
-    }
-    header h1 {
-        margin: 0;
-        font-size: 26px;
-        letter-spacing: 0.5px;
-    }
-    header p {
-        margin: 10px 0 0 0;
-        font-size: 14px;
-        color: #e0f2f1;
-    }
-    h2 {
-        color: var(--arduino-dark);
-        border-left: 6px solid var(--arduino-teal);
-        padding-left: 12px;
-        margin-top: 40px;
-        margin-bottom: 20px;
-        font-size: 20px;
-        border-bottom: 1px solid #e2e8f0;
-        padding-bottom: 5px;
-    }
-    h3 {
-        font-size: 16px;
-        color: #1a202c;
-        margin-top: 24px;
-        margin-bottom: 10px;
-        font-weight: bold;
-    }
-    p {
-        margin: 0 0 16px 0;
-        text-align: justify;
-    }
-    ul, ol {
-        margin: 0 0 20px 0;
-        padding-left: 24px;
-    }
-    li {
-        margin-bottom: 6px;
-    }
-    .flex-container {
-        display: flex;
-        gap: 24px;
-        margin: 20px 0;
-        align-items: flex-start;
-    }
-    .flex-col-text {
-        flex: 1.2;
-    }
-    .flex-col-diagram {
-        flex: 0.8;
-        text-align: center;
-    }
-    .diagram-box {
-        background-color: #ffffff;
-        border: 1px solid var(--border-color);
-        border-radius: 6px;
-        padding: 12px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-    }
-    .diagram-caption {
-        font-size: 11px;
-        color: #718096;
-        margin-top: 6px;
-        font-weight: bold;
-    }
-    .math-block {
-        text-align: center;
-        margin: 16px 0;
-        padding: 12px;
-        background-color: var(--light-bg);
-        border-radius: 6px;
-        border: 1px solid #edf2f7;
-        font-size: 18px;
-        font-family: 'Times New Roman', Times, serif;
-        font-style: italic;
-        font-weight: bold;
-        color: var(--arduino-dark);
-    }
-    .math-inline {
-        font-family: 'Times New Roman', Times, serif;
-        font-style: italic;
-        font-weight: bold;
-        color: var(--arduino-dark);
-    }
-    pre {
-        background-color: var(--dark-bg);
-        color: #f7fafc;
-        padding: 16px;
-        border-radius: 6px;
-        margin: 12px 0 24px 0;
-        overflow-x: auto;
-    }
-    code {
-        font-family: Consolas, Monaco, 'Courier New', Courier, monospace;
-        font-size: 13px;
-        line-height: 1.5;
-    }
-    .comment { color: #718096; font-style: italic; }
-    .keyword { color: #f6ad55; font-weight: bold; }
-    .type { color: #4fd1c5; }
-    .number { color: #63b3ed; }
-    
-    .callout {
-        background-color: #f0fdfa;
-        border-left: 5px solid var(--arduino-teal);
-        padding: 16px;
-        margin: 20px 0;
-        border-radius: 0 6px 6px 0;
-    }
-    .callout-title {
-        font-weight: bold;
-        color: #00686a;
-        margin-bottom: 6px;
-    }
-    .warning-callout {
-        background-color: #fff5f5;
-        border-left: 5px solid #e53e3e;
-        padding: 16px;
-        margin: 20px 0;
-        border-radius: 0 6px 6px 0;
-    }
-    .warning-title {
-        font-weight: bold;
-        color: #9b2c2c;
-        margin-bottom: 6px;
-    }
-
-    /* 練習問題用スタイル */
-    .exercise-box {
-        background-color: var(--exercise-bg);
-        border: 1px solid #fde68a;
-        border-left: 6px solid var(--exercise-border);
-        padding: 20px;
-        margin: 30px 0;
-        border-radius: 4px;
-    }
-    .exercise-title {
-        font-weight: bold;
-        color: #b45309;
-        font-size: 16px;
-        margin-bottom: 12px;
-        display: flex;
-        align-items: center;
-    }
-    .exercise-title::before {
-        content: "✏️";
-        margin-right: 8px;
-    }
-    .solution-box {
-        margin-top: 15px;
-        padding-top: 15px;
-        border-top: 1px dashed #cbd5e0;
-        color: #4a5568;
-    }
-    .solution-title {
-        font-weight: bold;
-        color: #2d3748;
-        margin-bottom: 4px;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 20px 0;
-    }
-    th, td {
-        border: 1px solid var(--border-color);
-        padding: 10px 14px;
-        text-align: left;
-    }
-    th {
-        background-color: #e6fffa;
-        color: #00686a;
-    }
-    tr:nth-child(even) {
-        background-color: var(--light-bg);
-    }
-    @media (max-width: 768px) {
-        .flex-container {
-            flex-direction: column;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elegoo Super Starter Kit for UNO - チュートリアルガイド</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --accent-color: #3498db;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --code-bg: #2d3748;
+            --code-text: #f7fafc;
+            --border-color: #e2e8f0;
         }
-        .container {
-            padding: 20px;
-            margin: 10px;
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
+
+        body {
+            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.7;
+            padding: 0;
+        }
+
         header {
-            margin: -20px -20px 20px -20px;
-            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-    }
-</style>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}, {left: '\\(', right: '\\)', display: false}, {left: '\\[', right: '\\]', display: true}]});"></script>
+
+        header h1 {
+            font-size: 24pt;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 12pt;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: block;
+        }
+
+        .section-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        h2 {
+            font-size: 16pt;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            padding-left: 12px;
+            border-left: 5px solid var(--accent-color);
+        }
+
+        h3 {
+            font-size: 13pt;
+            color: var(--secondary-color);
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            font-size: 10.5pt;
+        }
+
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 20px;
+            font-size: 10.5pt;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 10pt;
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #edf2f7;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f7fafc;
+        }
+
+        .code-block {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 20px;
+            border-radius: 6px;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 10pt;
+            overflow-x: auto;
+            margin: 15px 0;
+            white-space: pre;
+        }
+
+        .keyword { color: #f6ad55; font-weight: bold; }
+        .type { color: #63b3ed; }
+        .comment { color: #a0aec0; font-style: italic; }
+        .string { color: #68d391; }
+
+        .highlight-box {
+            background-color: #ebf8ff;
+            border-left: 4px solid var(--accent-color);
+            padding: 15px;
+            border-radius: 0 4px 4px 0;
+            margin: 20px 0;
+            font-size: 10pt;
+        }
+
+        .grid-lessons {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .lesson-item {
+            background-color: #f7fafc;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            font-size: 9.5pt;
+        }
+
+        .lesson-num {
+            font-weight: bold;
+            color: var(--accent-color);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #718096;
+            font-size: 9pt;
+            border-top: 1px solid var(--border-color);
+            margin-top: 50px;
+        }
+    </style>
 </head>
 <body>
 
+<header>
+    <h1>Elegoo Super Starter Kit for UNO</h1>
+    <p>日本語マニュアル・ビジュアルウェブガイド (V1.0.19.09.17 ベース)</p>
+</header>
+
 <div class="container">
-    <header>
-        <h1>Arduino電子工作テキスト</h1>
-        <p>〜理論解説・回路配線・ソースコード・実践練習問題パッケージ〜</p>
-    </header>
 
-    <h2>1. 共通基礎：電気回路の三要素と「オームの法則」</h2>
-    <p>電気を制御するためには、目に見えない電子の流れを物理的なモデル（水路モデルなど）で正しく把握することが不可欠です。</p>
-    
-    <h3>1-1. 各物理量の本質的意味</h3>
-    <ul>
-        <li><b>電圧 <span class="math-inline">V</span> (Unit: V)</b>：電気的な「位置エネルギーの差（電位差）」です。水路に例えると<b>「水位の高さ（水圧）」</b>です。</li>
-        <li><b>電流 <span class="math-inline">I</span> (Unit: A / mA)</b>：断面を1秒間に通過する電荷の量（流れの強さ）です。水路の<b>「水の流量」</b>にあたります。<span class="math-inline">1\text{A} = 1000\text{mA}</span> です。</li>
-        <li><b>抵抗 <span class="math-inline">R</span> (Unit: &Omega;)</b>：電気の流れにくさです。水路の<b>「川幅の狭さや、障害物の多さ」</b>にあたります。</li>
-    </ul>
-
-    <h3>1-2. 数理モデル：オームの法則</h3>
-    <p>これら3つの関係性は、以下の数式で完全に縛られます。</p>
-    <div class="math-block">V = I &times; R</div>
-
-    <h2>2. デジタル出力：LEDの物性と電流制限抵抗の設計</h2>
-    <p>LED（発光ダイオード）は普通の電球とは異なり、「半導体」としての強い物理的特性（極性、順電圧 <span class="math-inline">V_f</span>）を持っています。これを超えると抵抗がほぼゼロになり無限に電流が流れてしまうため、直列に「電流制限抵抗」を配置して回路を守ります。</p>
-
-    <div class="flex-container">
-        <div class="flex-col-text">
-            <h3>2-1. 電流制限抵抗の設計計算</h3>
-            <p><b>【計算プロセス】</b>（目標電流：<span class="math-inline">15\text{mA} = 0.015\text{A}</span>）</p>
-            <ol>
-                <li>抵抗にかかる電圧：全体電圧5.0VからLEDの順電圧(<span class="math-inline">V_f = 2.0\text{V}</span>)を差し引く。<br><span class="math-inline">V_R = 5.0\text{V} - 2.0\text{V} = 3.0\text{V}</span></li>
-                <li>抵抗値の算出：オームの法則（<span class="math-inline">R = V/I</span>）より導出。<br><span class="math-inline">R = 3.0\text{V} / 0.015\text{A} = 200\,\Omega</span></li>
-            </ol>
-            <p>市販の規格に合わせて安全側に振り、<b>220&Omega;</b>を実機ではよく使います。</p>
+    <!-- 1. 序文とサポート -->
+    <div class="section-card">
+        <h2>1. はじめに &amp; サポート情報</h2>
+        <p><strong>Elegoo社について:</strong> 2011年に設立され、中国のシリコンバレーと呼ばれる深センに拠点を置くオープンソースハードウェアの先進企業です。高品質なスターターキットや3Dプリンターなどの開発・販売を行っています。</p>
+        <p><strong>本教材の対象:</strong> 本チュートリアルはArduinoを初めて学ぶ初心者の方向けに構成されています。Arduinoコントロールボード、各種センサー、電子部品の基本的な使用方法をステップバイステップで習得できます。</p>
+        <div class="highlight-box">
+            <strong>安心の顧客サービス:</strong><br>
+            製品に関する問題や質問がある場合は、経験豊富なエンジニアが迅速に対応します。<br>
+            連絡先メールアドレス: <a href="mailto:service@elegoo.com">service@elegoo.com</a> / <a href="mailto:EUservice@elegoo.com">EUservice@elegoo.com</a>
         </div>
+    </div>
+
+    <!-- 2. コンポーネント一覧 -->
+    <div class="section-card">
+        <h2>2. 同梱部品（パッキングリスト）</h2>
+        <p>キットに含まれている主なコンポーネントの一覧です。実験を始める前に揃っているか確認しましょう。</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>部品名（日本語/英語）</th>
+                    <th>数量</th>
+                    <th>部品名（日本語/英語）</th>
+                    <th>数量</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Uno R3 コントロールボード (Uno R3 Controller Board)</td><td>1 PC</td><td>ステッピングモーター (Stepper Motor)</td><td>1 PC</td></tr>
+                <tr><td>サーボモーター (Servo Motor SG90)</td><td>1 PC</td><td>ULN2003 ステッピングモータードライバー</td><td>1 PC</td></tr>
+                <tr><td>赤外線受信モジュール (IR Receiver Module)</td><td>1 PC</td><td>赤外線リモコン (Remote)</td><td>1 PC</td></tr>
+                <tr><td>5V リレー (5V Relay)</td><td>1 PC</td><td>電源モジュール (Power Supply Module)</td><td>1 PC</td></tr>
+                <tr><td>LCD 1602 モジュール (ピンヘッダ付き)</td><td>1 PC</td><td>ブレッドボード用ジャンパ線 (65本)</td><td>1 PC</td></tr>
+                <tr><td>4桁7セグメントディスプレイ</td><td>1 PC</td><td>1桁7セグメントディスプレイ</td><td>1 PC</td></tr>
+                <tr><td>傾斜ボールスイッチ (Tilt Ball Switch)</td><td>1 PC</td><td>ブレッドボード (830穴)</td><td>1 PC</td></tr>
+                <tr><td>DHT11 温湿度センサーモジュール</td><td>1 PC</td><td>超音波センサーモジュール (HC-SR04)</td><td>1 PC</td></tr>
+                <tr><td>アナログジョイスティックモジュール</td><td>1 PC</td><td>ファンブレード &amp; 3-6V DCモーター</td><td>各1 PC</td></tr>
+                <tr><td>アクティブブザー / パッシブブザー</td><td>各1 PC</td><td>74HC595 IC / L293D IC</td><td>各1 PC</td></tr>
+                <tr><td>LED（赤・緑・青・黄・白の詰め合わせ）</td><td>25 PCS</td><td>RGB LED (Common Cathode)</td><td>2 PCS</td></tr>
+                <tr><td>抵抗器 (220Ω, 1kΩ, 10kΩなど計120枚)</td><td>120 PCS</td><td>光電池/フォトレジスタ (Photoresistor)</td><td>2 PCS</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 3. 全レッスン一覧 -->
+    <div class="section-card">
+        <h2>3. チュートリアル・レッスン一覧 (全25章)</h2>
+        <p>本マニュアルは、IDEの導入から高度なモーター制御まで、全25個のレッスンで構成されています。</p>
         
-        <div class="flex-col-diagram">
-            <div class="diagram-box">
-                <svg width="100%" height="220" viewBox="0 0 200 220" style="background:#fff;">
-                    <rect x="15" y="20" width="55" height="35" rx="4" fill="#00979d"/>
-                    <text x="42.5" y="42" fill="#fff" font-size="11" font-weight="bold" text-anchor="middle">Pin 13</text>
-                    <rect x="15" y="160" width="55" height="35" rx="4" fill="#4a5568"/>
-                    <text x="42.5" y="182" fill="#fff" font-size="11" font-weight="bold" text-anchor="middle">GND</text>
-                    
-                    <path d="M 70 38 L 120 38 L 120 55" fill="none" stroke="#2d3748" stroke-width="2"/>
-                    <path d="M 120 55 L 120 65 L 112 68 L 128 72 L 112 76 L 128 80 L 112 84 L 120 87 L 120 95" fill="none" stroke="#e53e3e" stroke-width="2"/>
-                    <text x="136" y="78" fill="#e53e3e" font-size="10" font-weight="bold">抵抗 220&Omega;</text>
-                    
-                    <line x1="120" y1="95" x2="120" y2="115" stroke="#2d3748" stroke-width="2"/>
-                    <polygon points="110,115 130,115 120,135" fill="#319795"/>
-                    <line x1="110" y1="135" x2="130" y2="135" stroke="#319795" stroke-width="2"/>
-                    <path d="M 132 120 L 144 112" fill="none" stroke="#319795" stroke-width="1.5"/>
-                    <text x="134" y="132" fill="#319795" font-size="10">LED</text>
-                    
-                    <path d="M 120 135 L 120 178 L 70 178" fill="none" stroke="#2d3748" stroke-width="2"/>
-                </svg>
-                <div class="diagram-caption">図1. 電流制限抵抗とLEDの配線図</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+            <div style="flex: 1; min-width: 250px;">
+                <ul>
+                    <li><strong>Lesson 0:</strong> IDE のインストール</li>
+                    <li><strong>Lesson 1:</strong> ライブラリ追加とシリアルモニタ</li>
+                    <li><strong>Lesson 2:</strong> 点滅 (Blink)</li>
+                    <li><strong>Lesson 3:</strong> LED の輝度制御と抵抗</li>
+                    <li><strong>Lesson 4:</strong> RGB LED による色混ぜ</li>
+                    <li><strong>Lesson 5:</strong> デジタル入力とプッシュボタン</li>
+                    <li><strong>Lesson 6:</strong> アクティブブザー</li>
+                    <li><strong>Lesson 7:</strong> 受動ブザー (パッシブブザー)</li>
+                    <li><strong>Lesson 8:</strong> 傾斜ボールスイッチ</li>
+                </ul>
+            </div>
+            <div style="flex: 1; min-width: 250px;">
+                <ul>
+                    <li><strong>Lesson 9:</strong> サーボモーターの駆動</li>
+                    <li><strong>Lesson 10:</strong> 超音波センサモジュール</li>
+                    <li><strong>Lesson 11:</strong> DHT11 温度湿度センサー</li>
+                    <li><strong>Lesson 12:</strong> アナログジョイスティック</li>
+                    <li><strong>Lesson 13:</strong> 赤外線受信モジュール</li>
+                    <li><strong>Lesson 14:</strong> LCD ディスプレイ表示</li>
+                    <li><strong>Lesson 15:</strong> 温度計 (Thermometer)</li>
+                    <li><strong>Lesson 16:</strong> 74HC595を使った8つのLED制御</li>
+                    <li><strong>Lesson 17:</strong> シリアルモニタへのデータ出力</li>
+                </ul>
+            </div>
+            <div style="flex: 1; min-width: 250px;">
+                <ul>
+                    <li><strong>Lesson 18:</strong> 光電池（フォトレジスタ）</li>
+                    <li><strong>Lesson 19:</strong> 74HC595と7セグメント表示</li>
+                    <li><strong>Lesson 20:</strong> 4桁7セグメント表示</li>
+                    <li><strong>Lesson 21:</strong> 直流(DC)モータの制御</li>
+                    <li><strong>Lesson 22:</strong> リレーによる高電圧スイッチング</li>
+                    <li><strong>Lesson 23:</strong> ステッパーモーター</li>
+                    <li><strong>Lesson 24:</strong> リモコンによるステッピングモータ制御</li>
+                </ul>
             </div>
         </div>
     </div>
 
-<pre><code><span class="keyword">const</span> <span class="type">int</span> LED_PIN = <span class="number">13</span>; 
-<span class="keyword">void</span> setup() {
-  pinMode(LED_PIN, OUTPUT); <span class="comment">// 13番ピンを出力モードに設定</span>
+    <!-- 4. 主要レッスンの詳細解説 -->
+    <div class="section-card">
+        <h2>4. 重要レッスンの詳細解説とコード構造</h2>
+
+        <!-- Lesson 0 & 1 -->
+        <h3>■ Lesson 0 &amp; 1: 環境構築とライブラリ管理</h3>
+        <p>Arduinoを動かすためには、PCに <strong>Arduino IDE</strong> をインストールする必要があります。Windows、Mac、Linuxに対応しており、公式ウェブサイトからインストーラーをダウンロードできます。</p>
+        <p><strong>ライブラリの追加方法:</strong> センサーやディスプレイのコードを簡略化するパーツの集まりをライブラリと呼びます。「スケッチ」＞「ライブラリを含む」＞「ライブラリを管理」から検索して追加するか、提供された「.zip形式のライブラリ」をそのまま読み込ませることで機能拡張が可能です。</p>
+
+        <!-- Lesson 2 -->
+        <h3>■ Lesson 2: 点滅 (Blink) — 初めてのプログラム</h3>
+        <p>ボード上の13番ピンに繋がっている内蔵LED（「L」LED）を制御します。Arduinoプログラムの基本骨格である <code>setup()</code> と <code>loop()</code> の役割を学びます。</p>
+        <div class="code-block">
+<span class="type">int</span> led = <span class="keyword">13</span>; <span class="comment">// 内蔵LEDが接続されている13番ピン</span>
+
+<span class="type">void</span> <span class="keyword">setup</span>() {
+  <span class="keyword">pinMode</span>(led, <span class="keyword">OUTPUT</span>); <span class="comment">// 13番ピンを出力モードに設定</span>
 }
-<span class="keyword">void</span> loop() {
-  digitalWrite(LED_PIN, HIGH); <span class="comment">// 点灯</span>
-  delay(<span class="number">1000</span>);                 <span class="comment">// 1秒待機</span>
-  digitalWrite(LED_PIN, LOW);  <span class="comment">// 消灯</span>
-  delay(<span class="number">1000</span>);
-}</code></pre>
 
-    <div class="exercise-box">
-        <div class="exercise-title">練習問題 1：LED電流制限抵抗の設計（計算）</div>
-        <p><b>【問題】</b> Arduinoの5Vピン（またはデジタル出力ピンHIGH）に、順電圧(<span class="math-inline">V_f</span>)が<b>2.6V</b>、定格電流が<b>20mA</b>の青色LEDを接続して安全に光らせたい。このとき直列に挿入すべき電流制限抵抗の理論値は何&Omega;か求めなさい。</p>
-        <div class="solution-box">
-            <div class="solution-title">【解答と解説】</div>
-            <p>1. まず、全体電圧(5.0V)からLEDが消費する分の電圧(2.6V)を引いて、抵抗にかかる分の電圧を求めます。<br>
-               <span class="math-inline">V_R = 5.0\text{V} - 2.6\text{V} = 2.4\text{V}</span><br>
-               2. 定格電流の単位をミリアンペアからアンペアに変換します。<br>
-               <span class="math-inline">20\text{mA} = 0.02\text{A}</span><br>
-               3. オームの法則（<span class="math-inline">R = V/I</span>）に代入して抵抗値を算出します。<br>
-               <span class="math-inline">R = 2.4\text{V} / 0.02\text{A} = \mathbf{120\,\Omega}</span><br>
-               <b>答： 120 &Omega;</b>
-            </p>
-        </div>
-    </div>
+<span class="type">void</span> <span class="keyword">loop</span>() {
+  <span class="keyword">digitalWrite</span>(led, <span class="keyword">HIGH</span>); <span class="comment">// LEDを点灯 (5V電圧を出力)</span>
+  <span class="keyword">delay</span>(<span class="keyword">1000</span>);            <span class="comment">// 1秒(1000ミリ秒)待機</span>
+  <span class="keyword">digitalWrite</span>(led, <span class="keyword">LOW</span>);  <span class="comment">// LEDを消灯 (0Vにする)</span>
+  <span class="keyword">delay</span>(<span class="keyword">1000</span>);            <span class="comment">// 1秒待機</span>
+}</div>
+        <p class="highlight-box">💡 <strong>応用:</strong> <code>delay(1000)</code> の数値を <code>500</code> に変更すると、2倍の速さでLEDが点滅するようになります。</p>
 
-    <h2>3. アナログ入力：ADCの分解能と可変抵抗による分圧</h2>
-    <div class="flex-container">
-        <div class="flex-col-text">
-            <h3>3-1. 分圧の法則（Voltage Divider）</h3>
-            <p>アナログスティックやボリュームつまみは、内部の可変抵抗の比率（<span class="math-inline">R_1</span> と <span class="math-inline">R_2</span>）を変えることで、中間のピンから滑らかに変化する電圧 <span class="math-inline">V_{out}</span> を出力します。</p>
-            <div class="math-block" style="font-size:15px;">V_{out} = V_{cc} &times; \frac{R_2}{R_1 + R_2}</div>
-            <h3>3-2. 10ビット解像度のAD変換</h3>
-            <p>Arduino Unoは内部の10ビットADCを用いて、0V〜5Vのアナログ電圧を <b>0 〜 1023</b>（1024段階）の整数にマッピングします。そのため、プログラム内で電圧値に戻すには、読み取った値に対して以下の計算を行います。</p>
-            <p style="text-align:center;"><span class="math-inline">\text{電圧}(V) = \text{analogReadの値} \times (5.0 / 1023.0)</span></p>
-        </div>
-        <div class="flex-col-diagram">
-            <div class="diagram-box">
-                <svg width="100%" height="180" viewBox="0 0 200 180" style="background:#fff;">
-                    <circle cx="100" cy="15" r="4" fill="#e53e3e"/>
-                    <text x="100" y="8" font-size="10" text-anchor="middle" font-weight="bold">5V</text>
-                    <line x1="100" y1="15" x2="100" y2="40" stroke="#2d3748" stroke-width="2"/>
-                    <path d="M 100 40 L 100 50 L 92 53 L 108 57 L 92 61 L 108 65 L 92 69 L 100 72 L 100 80" fill="none" stroke="#4a5568" stroke-width="2"/>
-                    <text x="116" y="62" font-size="10" fill="#4a5568">R1</text>
-                    <line x1="100" y1="80" x2="100" y2="110" stroke="#2d3748" stroke-width="2"/>
-                    <circle cx="100" cy="95" r="3" fill="#00979d"/>
-                    <line x1="100" y1="95" x2="140" y2="95" stroke="#00979d" stroke-width="2"/>
-                    <rect x="140" y="80" width="45" height="30" rx="3" fill="#00979d"/>
-                    <text x="162.5" y="98" fill="#fff" font-size="10" text-anchor="middle" font-weight="bold">Pin A0</text>
-                    <path d="M 100 110 L 100 120 L 92 123 L 108 127 L 92 131 L 108 135 L 92 139 L 100 142 L 100 150" fill="none" stroke="#4a5568" stroke-width="2"/>
-                    <text x="116" y="137" font-size="10" fill="#4a5568">R2</text>
-                    <line x1="100" y1="150" x2="100" y2="170" stroke="#2d3748" stroke-width="2"/>
-                    <line x1="85" y1="170" x2="115" y2="170" stroke="#2d3748" stroke-width="2"/>
-                </svg>
-                <div class="diagram-caption">図2. 可変抵抗による分圧配線図</div>
-            </div>
-        </div>
-    </div>
+        <!-- Lesson 3 -->
+        <h3>■ Lesson 3: LED と抵抗器の重要性</h3>
+        <p><strong>ブレッドボードの仕組み:</strong> はんだ付けをせずに電子回路の試作ができる基盤です。内部の穴は縦または横のラインで電気的に繋がっており、パーツの足を差し込むだけで結合できます。両端にある長いライン（電源レール）は、5VとGNDを各部品へ分配するのに便利です。</p>
+        <p><strong>LEDの極性:</strong> LEDにはプラス（アノード）とマイナス（カソード）があります。<strong>「足が長い方」</strong>または<strong>「本体の平らな縁がない方」</strong>がプラスです。逆に繋ぐと点灯しません。</p>
+        <p><strong>抵抗器の役割:</strong> LEDに直接電圧をかけると、過電流によって一瞬で焼き切れてしまいます。電流を制限（チョーク）するために必ず抵抗器を直列に入れます。本レッスンでは、抵抗値を 220Ω → 1kΩ → 10kΩ と大きくしていくことで、LEDの輝度がだんだん暗くなる現象を観察します。</p>
 
-    <div class="exercise-box">
-        <div class="exercise-title">練習問題 2：AD変換値からの電圧復元（計算）</div>
-        <p><b>【問題】</b> Arduinoの `analogRead(A0)` を実行したところ、シリアルモニターに整数値<b>「768」</b>が表示された。このとき、A0ピンに入力されている実際のアナログ電圧は何Vか、小数第3位を四捨五入して小数第2位まで求めなさい。（基準電圧は5.0Vとする）</p>
-        <div class="solution-box">
-            <div class="solution-title">【解答と解説】</div>
-            <p>10ビットAD変換では、0V〜5.0Vが0〜1023の1024段階にマッピングされます。<br>
-               したがって、全体のステップ数「1023」に対する「768」の割合を5.0Vに掛け合わせます。<br>
-               <span class="math-inline">\text{電圧} = 5.0\text{V} \times \frac{768}{1023} = \frac{3840}{1023} \approx 3.7536\dots\text{V}</span><br>
-               小数第3位の「3」を四捨五入して、3.75Vとなります。<br>
-               <b>答： 3.75 V</b>
-            </p>
-        </div>
-    </div>
+        <!-- Lesson 4 -->
+        <h3>■ Lesson 4: RGB LED と PWM（パルス幅変調）</h3>
+        <p>RGB LEDは、1つのパッケージの中に「赤(R)・緑(G)・青(B)」の3つのLEDが入っています。それぞれの明るさを個別に調節することで、光の三原色の原理により、あらゆる色（黄色、紫、白など）を作り出すことができます。</p>
+        <p><strong>PWM (Pulse Width Modulation) とは:</strong> Arduinoのデジタルピン（<code>~</code>マークが付いたピン）は、高速にON/OFFのパルスを繰り返すことで、疑似的にアナログな電圧（0〜255段階）を出力できます。<code>analogWrite(ピン番号, 輝度)</code> を使うことで、LEDの明るさを滑らかに変える（フェードイン・アウト）ことが可能です。</p>
 
-    <h2>4. デジタル入出力の応用：超音波センサーの時間計測と音速の動的計算</h2>
-    <p>超音波センサーは、パルスを送信してから跳ね返って戻るまでの往復時間（Time of Flight）をマイクロ秒単位で計測します。</p>
-
-    <h3>4-1. 物理数理モデル：音速の温度依存性</h3>
-    <p>音速（<span class="math-inline">v</span>）は固定ではなく、気温（<span class="math-inline">t</span>）に応じて以下の一次関数で変動します。</p>
-    <div class="math-block">v = 331.5 + 0.6t \quad [m/s]</div>
-
-    <div class="exercise-box">
-        <div class="exercise-title">練習問題 3：気温を考慮した超音波センサーの距離計算（物理・計算）</div>
-        <p><b>【問題】</b> 気温がちょうど<b>15℃</b>の理科室で超音波センサーの実演を行った。センサーのEchoピンから得られた往復パルス時間が<b>2000&mu;s</b>（マイクロ秒）であったとき、測定対象物までの片道距離は何cmか求めなさい。（小数第2位を四捨五入して小数第1位まで答えること）</p>
-        <div class="solution-box">
-            <div class="solution-title">【解答と解説】</div>
-            <p>1. まず、気温15℃における音速 <span class="math-inline">v</span> を公式から求めます。<br>
-               <span class="math-inline">v = 331.5 + 0.6 \times 15 = 331.5 + 9.0 = 340.5\text{m/s}</span><br>
-               2. プログラムで扱いやすいよう、「1マイクロ秒あたり何cm進むか」に単位を変換します。<br>
-               <span class="math-inline">340.5\text{m/s} = 34050\text{cm/s} = 0.03405\text{cm/}\mu\text{s}</span><br>
-               3. 往復時間(2000&mu;s)に音速を掛け、<b>片道にするため2で割ります</b>。<br>
-               <span class="math-inline">\text{距離} = \frac{2000 \times 0.03405}{2} = 1000 \times 0.03405 = 34.05\text{cm}</span><br>
-               小数第2位の「5」を四捨五入して、34.1cmとなります。<br>
-               <b>答： 34.1 cm</b>
-            </p>
-        </div>
-    </div>
-
-    <h2>5. パルス制御（出力）：DCモーターのPWM制御と数理</h2>
-    <p>Arduinoのデジタルピンは0Vか5Vしか出力できませんが、高速にスイッチングしてON時間の割合（<b>デューティ比</b>）を変えることで、疑似的に中間の平均電圧を作り出すことができます（PWM制御）。</p>
-    <div class="math-block" style="font-size:15px;">\text{デューティ比}(\%) = \frac{\text{analogWriteの設定値}}{255} \times 100</div>
-
-    <div class="warning-callout">
-        <div class="warning-title">モータードライバーICの必要性</div>
-        <p>DCモーターを停止・反転させた瞬間、コイルの性質により数百ボルトの「<b>逆起電力</b>」が発生します。また、起動には大電流が必要です。これらからマイコンを保護し電力を補うため、必ずモータードライバーICを中間に配線します。</p>
-    </div>
-
-    <div class="exercise-box">
-        <div class="exercise-title">練習問題 4：PWM制御のデューティ比と平均出力電圧（制御工学・計算）</div>
-        <p><b>【問題】</b> ArduinoでDCモーターの速度を調整するため、プログラム内で `analogWrite(9, 102);` と命令を出した。このとき、出力されるPWM波形の<b>①デューティ比（%）</b>と、モーターに実質的に加わる<b>②疑似的な平均出力電圧（V）</b>をそれぞれ求めなさい。（基準電圧は5.0Vとする）</p>
-        <div class="solution-box">
-            <div class="solution-title">【解答と解説】</div>
-            <p>analogWriteの引数は0〜255の256段階です。指定値「102」が最大値「255」に対してどれだけの割合かを求めます。<br><br>
-               <b>① デューティ比の計算：</b><br>
-               <span class="math-inline">\text{デューティ比} = \frac{102}{255} \times 100 = 0.4 \times 100 = \mathbf{40\%}</span><br><br>
-               <b>② 平均出力電圧の計算：</b><br>
-               最高電圧5.0Vに対して、デューティ比の割合（40%）を掛け合わせます。<br>
-               <span class="math-inline">\text{平均電圧} = 5.0\text{V} \times \frac{102}{255} = 5.0\text{V} \times 0.4 = \mathbf{2.0\text{V}}</span><br><br>
-               <b>答： ① 40% 、 ② 2.0 V</b>
-            </p>
-        </div>
-    </div>
-
-    <h2>6. 位置の制御：サーボモーターのフィードバックシステム</h2>
-    <p>サーボモーターは、20msの周期内にある「HIGHパルスの時間幅（1.0ms〜2.0ms）」によってターゲット角度（0°〜180°）を命令します。内部の角度センサーで常に現在のズレを監視し、自動修正をかけ続ける<b>「フィードバック制御（クローズドループ）」</b>の代表例です。</p>
-
-    <table style="width:60%; margin: 20px auto;">
-        <thead>
-            <tr><th>HIGHパルス幅</th><th>指示角度</th></tr>
-        </thead>
-        <tbody>
-            <tr><td>1.0 ms</td><td>0 度</td></tr>
-            <tr><td>1.5 ms</td><td>90 度（中央）</td></tr>
-            <tr><td>2.0 ms</td><td>180 度</td></tr>
-        </tbody>
-    </table>
-
-<pre><code>#include &lt;Servo.h&gt;
-Servo myServo;
-
-<span class="keyword">void</span> setup() {
-  myServo.attach(<span class="number">10</span>); <span class="comment">// 10番ピンをサーボ制御用に指定</span>
-}
-<span class="keyword">void</span> loop() {
-  myServo.write(<span class="number">90</span>);  <span class="comment">// 中央（90度）の位置に保持命令（1.5msパルス自動出力）</span>
-  delay(<span class="number">1000</span>);
-}</code></pre>
+        <!-- Lesson 5 -->
+        <h3>■ Lesson 5: デジタル入力とプッシュボタン</h3>
+        <p>スイッチを押すことでLEDをON/OFFするインタラクティブな回路です。ボタンには4つの足がありますが、内部で2個ずつ繋がっており、実質的には2端子のスイッチとして機能します。</p>
+        <div class="code-block">
+<span class="comment">// setup内での特殊な設定</span>
+<span class="keyword">pinMode</span>(buttonApin, <span class="keyword">INPUT_PULLUP</span>);
+<span class="keyword">pinMode</span>(buttonBpin, <span class="keyword">INPUT_PULLUP</span>);
 </div>
+        <p><strong>INPUT_PULLUPの解説:</strong> Arduino内蔵のプルアップ抵抗を有効にする設定です。スイッチが押されていない時は常に <strong>HIGH</strong> に維持され、ボタンが押されてGND（接地）に繋がった瞬間に <strong>LOW</strong> に変化します。そのため、プログラム上の判定ロジックは「<code>if (digitalRead(buttonPin) == LOW)</code>」の時にボタンが押されたと判断します。</p>
+    </div>
+
+</div>
+
+<footer>
+    <p>&copy; Elegoo Super Starter Kit for UNO - ビジュアル学習用まとめHTML</p>
+</footer>
 
 </body>
 </html>
